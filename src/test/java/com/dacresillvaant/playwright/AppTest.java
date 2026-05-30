@@ -1,4 +1,4 @@
-package com.dacresillvaant.appium;
+package com.dacresillvaant.playwright;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
