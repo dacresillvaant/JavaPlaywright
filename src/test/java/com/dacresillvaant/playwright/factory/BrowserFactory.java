@@ -17,7 +17,7 @@ public class BrowserFactory {
         return browserContextThreadLocal.get();
     }
 
-    private static void initializePlaywright() {
+    public static void initializePlaywright() {
         log.info("Initializing Playwright");
         long start = System.currentTimeMillis();
         try {
@@ -29,8 +29,7 @@ public class BrowserFactory {
         log.info("Playwright initialized in {} ms", System.currentTimeMillis() - start);
     }
 
-    public static void initializePlaywrightAndBrowser(String browserType, boolean headless) {
-        initializePlaywright();
+    public static void initializeBrowserAndContext(String browserType, boolean headless) {
         log.info("Initializing browser: {} with headless mode set to: {}", browserType, headless);
 
         BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(headless);
@@ -51,17 +50,49 @@ public class BrowserFactory {
         log.info("{} browser initialized in {} ms",  browserType,  System.currentTimeMillis() - start);
     }
 
-    public static void closeBrowserAndPlaywright() {
-        log.info("Closing browser and Playwright");
-        try {
-            if (browserContextThreadLocal.get() != null) browserContextThreadLocal.get().close();
-            if (browserThreadLocal.get() != null) browserThreadLocal.get().close();
-            if (playwrightThreadLocal.get() != null) playwrightThreadLocal.get().close();
-        } finally {
-            browserContextThreadLocal.remove();
-            browserThreadLocal.remove();
-            playwrightThreadLocal.remove();
+    public static void closeBrowserAndContext() {
+        if (browserContextThreadLocal.get() != null) {
+            try {
+                String browserName = browserContextThreadLocal.get().browser().browserType().name();
+                log.info("Closing {} Browser Context",  browserName);
+
+                long start = System.currentTimeMillis();
+
+                browserContextThreadLocal.get().close();
+                browserContextThreadLocal.remove();
+                log.info("{} BrowserContext closed in {} ms", browserName, System.currentTimeMillis() - start);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to close BrowserContext", e);
+            }
         }
-        log.info("Browser and Playwright closed");
+
+        if (browserThreadLocal.get() != null) {
+            try {
+                String browserName = browserThreadLocal.get().browserType().name();
+                log.info("Closing {} Browser", browserName);
+                long start = System.currentTimeMillis();
+
+                browserThreadLocal.get().close();
+                browserThreadLocal.remove();
+                log.info("{} Browser closed in {} ms", browserName, System.currentTimeMillis() - start);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to close Browser", e);
+            }
+        }
+    }
+
+    public static void closePlaywright() {
+        if (playwrightThreadLocal.get() != null) {
+            try {
+                log.info("Closing Playwright");
+                long start = System.currentTimeMillis();
+
+                playwrightThreadLocal.get().close();
+                playwrightThreadLocal.remove();
+                log.info("Playwright closed in {} ms", System.currentTimeMillis() - start);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to close Playwright", e);
+            }
+        }
     }
 }

@@ -13,19 +13,27 @@ public abstract class BaseTest {
 
     protected Page baseTestPage;
 
+    @BeforeClass
+    public void setUpPlaywright() {
+        BrowserFactory.initializePlaywright();
+    }
+
     @BeforeMethod
     @Parameters({"browserType", "headless"})
-    public void setUp(@Optional("chromium") String browserType, @Optional("false") String headless) {
-        BrowserFactory.initializePlaywrightAndBrowser(browserType, Boolean.parseBoolean(headless));
+    public void setUpBrowser(@Optional("chromium") String browserType, @Optional("false") String headless) {
+        BrowserFactory.initializeBrowserAndContext(browserType, Boolean.parseBoolean(headless));
         BrowserContext browserContext = BrowserFactory.getBrowserContextFromThreadLocal();
         baseTestPage = browserContext.newPage();
-        log.info("Test setup complete");
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDown() {
+    public void tearDownBrowser() {
         if (baseTestPage != null) baseTestPage.close();
-        BrowserFactory.closeBrowserAndPlaywright();
-        log.info("Test teardown complete");
+        BrowserFactory.closeBrowserAndContext();
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void tearDownPlaywright() {
+        BrowserFactory.closePlaywright();
     }
 }
