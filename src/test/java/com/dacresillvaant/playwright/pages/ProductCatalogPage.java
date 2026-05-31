@@ -50,7 +50,7 @@ public class ProductCatalogPage {
                 productName.toLowerCase().replace(" ", "-")));
     }
 
-    private Locator removeButton(String productName) {
+    private Locator removeFromCartButton(String productName) {
         return page.locator(String.format("[data-test='remove-%s']",
                 productName.toLowerCase().replace(" ", "-")));
     }
@@ -89,11 +89,16 @@ public class ProductCatalogPage {
 
     public void removeFromCart(String productName) {
         log.info("Removing product from cart: {}", productName);
-        PageActions.click(removeButton(productName));
+        PageActions.click(removeFromCartButton(productName));
     }
 
     public String getCartBadgeCount() {
         return PageActions.getText(cartBadge());
+    }
+
+    public void clickOnProduct(String productName) {
+        log.info("Clicking on product: {}", productName);
+        PageActions.clickHavingText(productNames(), productName);
     }
 
     public boolean isProductCatalogPageOpened() {

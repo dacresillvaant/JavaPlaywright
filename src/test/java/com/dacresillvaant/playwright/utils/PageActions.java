@@ -14,6 +14,11 @@ public class PageActions {
         locator.click();
     }
 
+    public static void clickHavingText(Locator locator, String text) {
+        log.info("Clicking: {}", locator);
+        locator.filter(new Locator.FilterOptions().setHasText(text)).click();
+    }
+
     public static void fill(Locator locator, String text) {
         log.info("Filling: {} with text: {}", locator, text);
         locator.fill(text);
