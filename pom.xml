@@ -16,7 +16,7 @@
         <maven.compiler.target>21</maven.compiler.target>
 
         <!-- Acts as a default suite file if none is passed in mvn -Dsuite.file=sample.xml command -->
-        <suite.file>src/test/resources/suitefiles/default_suite.xml</suite.file>
+        <suite.file>src/test/resources/suitefiles/default-suite.xml</suite.file>
 
         <testng.version>7.12.0</testng.version>
         <playwright.version>1.60.0</playwright.version>

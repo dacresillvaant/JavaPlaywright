@@ -1,5 +1,6 @@
 package com.dacresillvaant.playwright.pages;
 
+import com.dacresillvaant.playwright.testdata.UserCredentials;
 import com.dacresillvaant.playwright.utils.PageActions;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -42,6 +43,13 @@ public class LoginPage {
         log.info("Logging in with username: {}", username);
         PageActions.fill(usernameInput(), username);
         PageActions.fill(passwordInput(), password);
+        PageActions.click(loginButton());
+    }
+
+    public void loginWithStandardUser() {
+        log.info("Logging in with username: {}", UserCredentials.STANDARD_USER.getUsername());
+        PageActions.fill(usernameInput(), UserCredentials.STANDARD_USER.getUsername());
+        PageActions.fill(passwordInput(), UserCredentials.STANDARD_USER.getPassword());
         PageActions.click(loginButton());
     }
 
