@@ -3,7 +3,7 @@
 
     <test name="All Tests - Chromium" parallel="classes" thread-count="2">
         <parameter name="browserType" value="chromium"/>
-        <parameter name="headless" value="false"/>
+        <parameter name="headless" value="true"/>
         <packages>
             <package name="com.dacresillvaant.playwright.tests.*"/>
         </packages>
@@ -11,7 +11,7 @@
 
     <test name="All Tests - Firefox" parallel="classes" thread-count="2">
         <parameter name="browserType" value="firefox"/>
-        <parameter name="headless" value="false"/>
+        <parameter name="headless" value="true"/>
         <packages>
             <package name="com.dacresillvaant.playwright.tests.*"/>
         </packages>
@@ -19,7 +19,7 @@
 
     <test name="All Tests - WebKit" parallel="classes" thread-count="2">
         <parameter name="browserType" value="webkit"/>
-        <parameter name="headless" value="false"/>
+        <parameter name="headless" value="true"/>
         <packages>
             <package name="com.dacresillvaant.playwright.tests.*"/>
         </packages>
