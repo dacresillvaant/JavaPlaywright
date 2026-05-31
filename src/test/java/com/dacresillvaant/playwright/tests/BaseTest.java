@@ -2,9 +2,11 @@ package com.dacresillvaant.playwright.tests;
 
 import com.dacresillvaant.playwright.factory.BrowserFactory;
 import com.dacresillvaant.playwright.listeners.TestListener;
+import com.dacresillvaant.playwright.utils.ScreenshotUtils;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 @Slf4j
@@ -27,7 +29,11 @@ public abstract class BaseTest {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDownBrowser() {
+    public void tearDownBrowser(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE && baseTestPage != null) {
+            ScreenshotUtils.takeScreenshot(baseTestPage, result.getName());
+        }
+
         if (baseTestPage != null) baseTestPage.close();
         BrowserFactory.closeBrowserAndContext();
     }
